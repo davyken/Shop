@@ -121,16 +121,35 @@
 
 @media (max-width: 768px) {
   .menu-toggle { display: flex; }
+
+  .navbar-inner {
+    padding: 0 1rem;
+  }
+
   .navbar-links {
     display: none;
     position: absolute;
-    top: 64px; left: 0; right: 0;
+    top: 64px;
+    left: 0;
+    right: 0;
     background: white;
     flex-direction: column;
-    padding: 1rem;
+    padding: 0.75rem;
     border-bottom: 2px solid var(--border);
     gap: 0.25rem;
   }
   .navbar-links.open { display: flex; }
-  .navbar-links a { width: 100%; text-align: center; }
+
+  .navbar-links a {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* avoid long overflow of the sticky dropdown */
+  .drop-menu {
+    right: 0;
+    left: auto;
+    min-width: 190px;
+  }
 }
+
