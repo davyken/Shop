@@ -29,9 +29,8 @@ export default function Navbar() {
         <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
           {!user ? (
             <>
-              <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
-              <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
               <Link to="/register" onClick={() => setMenuOpen(false)} className="btn btn-primary btn-sm">Register</Link>
+
             </>
           ) : (
             <>
