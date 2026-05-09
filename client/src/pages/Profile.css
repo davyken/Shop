@@ -1,0 +1,19 @@
+.profile-avatar-card { margin-bottom: 1.5rem; }
+.avatar-section { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.avatar-wrap { position: relative; }
+.avatar-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.45);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.avatar-section h2 { font-family: var(--font-head); font-size: 1.5rem; }
+.avatar-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+
+.camera-section { margin-top: 1rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.camera-preview { width: 280px; height: 210px; border-radius: var(--radius); object-fit: cover; border: 2px solid var(--border); }
+
+.profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.pf-section-title { font-weight: 800; font-size: 1rem; margin-bottom: 1rem; color: var(--text); display: flex; align-items: center; gap: 6px; }
+
+@media (max-width: 768px) {
+  .profile-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,50 @@
+.shop-toolbar {
+  display: flex; gap: 0.75rem; align-items: center;
+  margin-bottom: 1rem; flex-wrap: wrap;
+}
+.search-wrap {
+  position: relative; flex: 1; min-width: 240px;
+}
+.search-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--text2); font-size: 1rem;
+}
+.search-input {
+  width: 100%; padding: 11px 16px 11px 40px;
+  border: 2px solid var(--border); border-radius: var(--radius-sm);
+  font-family: var(--font-body); font-size: 0.9rem; color: var(--text);
+  outline: none; transition: var(--transition);
+}
+.search-input:focus { border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-light); }
+.filter-toggle { position: relative; }
+.filter-toggle.active { background: var(--pink-light); color: var(--pink-dark); border-color: var(--pink); }
+.filter-dot {
+  width: 8px; height: 8px; background: var(--pink); border-radius: 50%;
+  position: absolute; top: -3px; right: -3px;
+}
+
+.filter-panel {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem; background: white; border-radius: var(--radius);
+  padding: 1.25rem; border: 1.5px solid var(--border);
+  margin-bottom: 1rem; animation: slideDown 0.2s ease;
+}
+@keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.filter-group label { display: block; font-weight: 700; font-size: 0.82rem; margin-bottom: 6px; color: var(--text2); }
+
+.result-count { color: var(--text2); font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+
+.loading-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem;
+}
+.skeleton-card {
+  height: 280px; border-radius: var(--radius); background: linear-gradient(90deg, #f0e6ef 25%, #faf0f8 50%, #f0e6ef 75%);
+  background-size: 200% 100%; animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+.pagination {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1rem; margin-top: 2rem;
+  font-weight: 700; color: var(--text2);
+}
