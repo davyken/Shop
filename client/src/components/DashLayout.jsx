@@ -47,13 +47,6 @@ export default function DashLayout({ children, title }) {
       </aside>
 
       <main className="dash-main">
-        <div className="dash-topbar">
-          <h1 className="dash-title">{title}</h1>
-          <NavLink to="/checkout" className="cart-fab">
-            <FiShoppingCart />
-            {count > 0 && <span className="cart-badge">{count}</span>}
-          </NavLink>
-        </div>
         <div className="dash-content page-enter">{children}</div>
       </main>
     </div>
