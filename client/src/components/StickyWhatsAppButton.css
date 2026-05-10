@@ -1,0 +1,48 @@
+.sticky-whatsapp-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25D366;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.sticky-whatsapp-btn:hover {
+  background-color: #1ebe5d;
+  transform: scale(1.1);
+}
+
+.sticky-whatsapp-btn.clicked {
+  background-color: #128C7E;
+  transform: scale(0.95);
+}
+
+.sticky-whatsapp-btn svg {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 480px) {
+  .sticky-whatsapp-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 12px;
+  }
+  
+  .sticky-whatsapp-btn svg {
+    font-size: 20px;
+  }
+}

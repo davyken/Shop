@@ -7,7 +7,7 @@ const { uploadProduct, cloudinary } = require('../config/cloudinary');
 // GET /api/products - list all (with filters)
 router.get('/', async (req, res) => {
   try {
-    const { category, minPrice, maxPrice, status, search, page = 1, limit = 12 } = req.query;
+    const { category, minPrice, maxPrice, status, search, page = 1, limit = 12, sort = 'newest' } = req.query;
     const query = { isDeleted: false };
     if (category) query.category = category;
     if (status) query.status = status;
@@ -18,11 +18,17 @@ router.get('/', async (req, res) => {
     }
     if (search) query.$text = { $search: search };
 
+    // Determine sort options
+    let sortOptions = { createdAt: -1 }; // default: newest first
+    if (sort === 'price-low') sortOptions = { price: 1 };
+    else if (sort === 'price-high') sortOptions = { price: -1 };
+    else if (sort === 'oldest') sortOptions = { createdAt: 1 };
+
     const total = await Product.countDocuments(query);
     const products = await Product.find(query)
       .populate('category', 'name')
       .populate('seller', 'name username profilePic')
-      .sort({ createdAt: -1 })
+      .sort(sortOptions)
       .skip((page - 1) * limit)
       .limit(Number(limit));
 

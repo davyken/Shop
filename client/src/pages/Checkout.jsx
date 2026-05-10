@@ -102,7 +102,7 @@ export default function Checkout() {
                 {items.map((item) => (
                   <div key={item._id} className="cart-item">
                     <img
-                      src={item.images?.[0]?.url || 'https://via.placeholder.com/60'}
+                      src={item.images?.[0]?.url || 'https://picsum.photos/seed/cart1/60/60'}
                       alt={item.title}
                     />
                     <div className="cart-item-info">

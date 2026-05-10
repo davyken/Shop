@@ -63,7 +63,7 @@ export default function MyProducts() {
             {products.map(p => (
               <div key={p._id} className="table-row">
                 <div className="product-info">
-                  <img src={p.images?.[0]?.url || 'https://via.placeholder.com/50'} alt={p.title} />
+                  <img src={p.images?.[0]?.url || 'https://picsum.photos/seed/prod2/50/50'} alt={p.title} />
                   <span>{p.title}</span>
                 </div>
                 <span className="table-cat">{p.category?.name || '-'}</span>

@@ -1,28 +1,27 @@
 import { useEffect, useState, useCallback } from 'react'
-import { FiSearch, FiFilter, FiX, FiMenu } from 'react-icons/fi'
+import { FiFilter, FiX } from 'react-icons/fi'
 import DashLayout from '../components/DashLayout'
 import ProductCard from '../components/ProductCard'
 import api from '../api/axios'
-import './Shop.css'
+import { useParams } from 'react-router-dom'
 
-export default function Shop() {
+export default function CategoryProducts() {
+  const { id } = useParams()
   const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [showFilters, setShowFilters] = useState(false)
-  const [sortBy, setSortBy] = useState('newest')
 
   const [filters, setFilters] = useState({
-    search: '', category: '', status: '', minPrice: '', maxPrice: ''
+    search: '', category: id, status: '', minPrice: '', maxPrice: ''
   })
 
   const fetchProducts = useCallback(async () => {
     setLoading(true)
     try {
-      const params = new URLSearchParams({ page, limit: 12, sort: sortBy })
+      const params = new URLSearchParams({ page, limit: 12 })
       if (filters.search) params.set('search', filters.search)
       if (filters.category) params.set('category', filters.category)
       if (filters.status) params.set('status', filters.status)
@@ -34,67 +33,41 @@ export default function Shop() {
       setTotalPages(data.pages)
     } catch {}
     setLoading(false)
-  }, [filters, page, sortBy])
+  }, [filters, page])
 
   useEffect(() => { fetchProducts() }, [fetchProducts])
 
-  useEffect(() => {
-    api.get('/api/categories').then(({ data }) => setCategories(data.categories))
-  }, [])
-
   const clearFilters = () => {
-    setFilters({ search: '', category: '', status: '', minPrice: '', maxPrice: '' })
+    setFilters({ search: '', category: id, status: '', minPrice: '', maxPrice: '' })
     setPage(1)
   }
 
   const hasFilters = Object.values(filters).some(Boolean)
 
   return (
-    <DashLayout title="Browse Shop">
-      <div className="shop-page">
-         {/* Search bar */}
-         <div className="shop-toolbar">
-           <div className="search-wrap">
-             <FiSearch className="search-icon" />
-             <input
-               className="search-input"
-               placeholder="Search baby products..."
-               value={filters.search}
-               onChange={(e) => { setFilters({ ...filters, search: e.target.value }); setPage(1) }}
-             />
-           </div>
-           
-           <div className="sort-wrap">
-             <FiMenu className="sort-icon" />
-             <select 
-               className="form-select" 
-               value={sortBy}
-               onChange={(e) => { setSortBy(e.target.value); setPage(1) }}
-             >
-               <option value="newest">Newest First</option>
-               <option value="price-low">Price: Low to High</option>
-               <option value="price-high">Price: High to Low</option>
-             </select>
-           </div>
-           
-           <button className={`btn btn-ghost filter-toggle ${showFilters ? 'active' : ''}`}
-             onClick={() => setShowFilters(!showFilters)}>
-             <FiFilter /> Filters {hasFilters && <span className="filter-dot" />}
-           </button>
-           {hasFilters && <button className="btn btn-ghost btn-sm" onClick={clearFilters}><FiX /> Clear</button>}
-         </div>
+    <DashLayout title="Category Products">
+      <div className="category-products-page">
+        {/* Search bar */}
+        <div className="shop-toolbar">
+          <div className="search-wrap">
+            <FiFilter className="search-icon" />
+            <input
+              className="search-input"
+              placeholder="Search in category..."
+              value={filters.search}
+              onChange={(e) => { setFilters({ ...filters, search: e.target.value }); setPage(1) }}
+            />
+          </div>
+          <button className={`btn btn-ghost filter-toggle ${showFilters ? 'active' : ''}`}
+            onClick={() => setShowFilters(!showFilters)}>
+            Filters {hasFilters && <span className="filter-dot" />}
+          </button>
+          {hasFilters && <button className="btn btn-ghost btn-sm" onClick={clearFilters}><FiX /> Clear</button>}
+        </div>
 
         {/* Filter panel */}
         {showFilters && (
           <div className="filter-panel">
-            <div className="filter-group">
-              <label>Category</label>
-              <select className="form-select" value={filters.category}
-                onChange={(e) => { setFilters({ ...filters, category: e.target.value }); setPage(1) }}>
-                <option value="">All Categories</option>
-                {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
-              </select>
-            </div>
             <div className="filter-group">
               <label>Status</label>
               <select className="form-select" value={filters.status}
@@ -106,13 +79,13 @@ export default function Shop() {
               </select>
             </div>
             <div className="filter-group">
-<label>Min Price (ZES)</label>
+              <label>Min Price (ZES)</label>
               <input type="number" className="form-input" value={filters.minPrice}
                 onChange={(e) => { setFilters({ ...filters, minPrice: e.target.value }); setPage(1) }}
                 placeholder="0" />
             </div>
             <div className="filter-group">
-<label>Max Price (ZES)</label>
+              <label>Max Price (ZES)</label>
               <input type="number" className="form-input" value={filters.maxPrice}
                 onChange={(e) => { setFilters({ ...filters, maxPrice: e.target.value }); setPage(1) }}
                 placeholder="No limit" />
@@ -129,7 +102,7 @@ export default function Shop() {
         ) : products.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">🔍</div>
-            <p>No products found. Try adjusting your filters.</p>
+            <p>No products found in this category.</p>
           </div>
         ) : (
           <div className="product-grid">{products.map(p => <ProductCard key={p._id} product={p} />)}</div>
