@@ -19,6 +19,7 @@ import EditProduct from './pages/EditProduct'
 import Profile from './pages/Profile'
 import Orders from './pages/Orders'
 import Checkout from './pages/Checkout'
+import Navbar from './components/Navbar'
 
 function PrivateRoute({ children }) {
   const { user } = useAuth()
@@ -54,6 +55,7 @@ export default function App() {
               error: { style: { background: '#FADBD8', color: '#7b1c15' } },
             }}
           />
+          <Navbar />
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
@@ -68,7 +70,7 @@ export default function App() {
             <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
             <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
             <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={null} />
           </Routes>
         </BrowserRouter>
       </CartProvider>

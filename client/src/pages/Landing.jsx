@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+
 import './Landing.css'
 
 const features = [
@@ -19,7 +19,6 @@ export default function Landing() {
 
   return (
     <div className="landing">
-      <Navbar />
       {/* Hero */}
       <section className="hero">
         <div className="hero-bg-blobs">
