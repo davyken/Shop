@@ -26,7 +26,14 @@
   text-decoration: none;
   flex-shrink: 0;
 }
-.brand-icon { font-size: 1.5rem; }
+.brand-icon { display:flex; align-items:center; }
+
+.navbar-logo {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+}
+
 .brand-text {
   font-family: var(--font-head);
   font-size: 1.3rem;

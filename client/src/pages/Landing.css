@@ -2,7 +2,7 @@
 
 /* Hero */
 .hero {
-  min-height: calc(100vh - 64px);
+  min-height: auto;
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -50,6 +50,7 @@
 }
 .hero-sub { font-size: 1.1rem; color: var(--text2); margin-bottom: 2rem; max-width: 480px; line-height: 1.6; }
 .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.hero-cta-2 { margin-bottom: 2rem; }
 .hero-stats {
   display: flex;
   gap: 2rem;
@@ -120,6 +121,25 @@
 }
 .cat-chip:hover { background: var(--pink); color: white; border-color: var(--pink); }
 
+/* Product sections */
+.product-sections { padding: 1.5rem 0 4rem; }
+.product-row-section { margin-top: 2rem; }
+.product-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.row-title { font-family: var(--font-head); color: var(--text); font-size: 1.6rem; margin: 0; }
+.row-view-all { color: var(--text2); font-weight: 800; text-decoration: none; }
+.row-view-all:hover { color: var(--pink-dark); text-decoration: underline; }
+.product-row-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+}
+
 /* Features */
 .features-section { padding: 5rem 2rem; }
 .section-inner { max-width: 1100px; margin: 0 auto; }
@@ -150,6 +170,60 @@
 .cta-section p { font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9; }
 .cta-section .btn-primary { background: white; color: var(--pink-dark); }
 .cta-section .btn-primary:hover { background: var(--pink-light); }
+
+/* Modal styles for Landing CTA */
+.bb-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 9999;
+}
+.bb-modal {
+  width: 100%;
+  max-width: 520px;
+  background: white;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.bb-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.bb-modal-head h3 { margin: 0; font-family: var(--font-head); }
+.bb-modal-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: var(--text2);
+}
+.bb-modal-sub { padding: 0 1.25rem 0.8rem; color: var(--text2); font-weight: 700; }
+
+.bb-auth-form { padding: 0 1.25rem 1.25rem; display: flex; flex-direction: column; gap: 0.95rem; }
+.bb-auth-form label { font-weight: 800; font-size: 0.9rem; color: var(--text2); display: flex; flex-direction: column; gap: 0.4rem; }
+.bb-auth-form input {
+  padding: 11px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  font-family: var(--font-body);
+}
+.bb-auth-form input:focus { border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-light); }
+
+.bb-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.bb-auth-links { display: flex; gap: 0.6rem; align-items: center; justify-content: center; font-weight: 800; color: var(--text2); }
+.bb-auth-links a { color: var(--pink-dark); text-decoration: none; }
+.bb-auth-links a:hover { text-decoration: underline; }
 
 /* Footer */
 .landing-footer {
@@ -215,5 +289,7 @@
   .cta-section h2 {
     font-size: 2rem;
   }
+
+  .bb-grid-2 { grid-template-columns: 1fr; }
 }
 

@@ -1,72 +1,81 @@
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { FiTrash2, FiPlus, FiMinus, FiCheckCircle, FiShoppingBag } from 'react-icons/fi'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { FiTrash2, FiPlus, FiMinus, FiShoppingBag, FiSend, FiUser, FiPhone } from 'react-icons/fi'
 import DashLayout from '../components/DashLayout'
 import { useCart } from '../context/CartContext'
-import api from '../api/axios'
+import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 import './Checkout.css'
 
-const PAYMENT_METHODS = [
-  { id: 'whatsapp', label: 'Order via WhatsApp', icon: '💬', color: '#25D366' },
-  { id: 'visa', label: 'Visa / Mastercard', icon: '💳', color: '#1a1f71' },
-  { id: 'orange', label: 'Orange Money', icon: '🟠', color: '#FF6600' },
-  { id: 'momo', label: 'MTN MoMo', icon: '📱', color: '#FFCC00' },
-  { id: 'stripe', label: 'Stripe', icon: '⚡', color: '#635BFF' },
-]
+const WHATSAPP_PHONE = '+254728721142'
 
 export default function Checkout() {
   const { items, updateQty, removeItem, clearCart, total, count } = useCart()
-  const navigate = useNavigate()
-  const [method, setMethod] = useState('whatsapp')
+  const { user } = useAuth()
   const [processing, setProcessing] = useState(false)
-  const [success, setSuccess] = useState(null)
-  const [payFields, setPayFields] = useState({ cardNumber: '', expiry: '', cvv: '', name: '', phone: '' })
+  const [whatsappSubmitted, setWhatsappSubmitted] = useState(false)
+  const [customerName, setCustomerName] = useState('')
+  const [customerPhone, setCustomerPhone] = useState('')
+
+  useEffect(() => {
+    if (user) {
+      setCustomerName(user.name)
+      setCustomerPhone(user.phone || user.email || '')
+    }
+  }, [user])
 
   const handlePay = async () => {
     if (items.length === 0) return toast.error('Cart is empty')
 
-    if (method === 'whatsapp') {
-      const phone = '+254728721142'
-      const itemText = items.map(i => `- ${i.title} (x${i.qty}) - ZES ${(i.price * i.qty).toLocaleString()}`).join('\n')
-      const message = `Hello, I want to order:\n${itemText}\n\n*Total: ZES ${total.toLocaleString()}*`
-      window.open(`https://wa.me/${phone.replace('+', '')}?text=${encodeURIComponent(message)}`, '_blank')
-      return
+    let name = customerName
+    let phone = customerPhone
+
+    if (user) {
+      name = user.name
+      phone = user.phone || user.email || ''
+    } else {
+      if (!name.trim()) return toast.error('Please enter your name')
+      if (!phone.trim()) return toast.error('Please enter your phone number')
     }
 
     setProcessing(true)
-    await new Promise(r => setTimeout(r, 2200))
-    try {
-      const { data } = await api.post('/api/orders', {
-        items: items.map(i => ({ productId: i._id, quantity: i.qty })),
-        paymentMethod: method,
-        paymentDetails: payFields,
-      })
-      clearCart()
-      setSuccess(data.order)
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Payment failed')
-    }
+
+    const itemText = items
+      .map((i) => `- ${i.title} (x${i.qty}) - ZES ${(i.price * i.qty).toLocaleString()}`)
+      .join('\n')
+
+    const customerInfo = user 
+      ? `\n\nCustomer: ${name}${phone ? ` (${phone})` : ''}`
+      : `\n\nCustomer: ${name}\nPhone: ${phone}`
+    const message = `Hello, I want to order:${itemText}${customerInfo}\n\n*Total: ZES ${total.toLocaleString()}*`
+
+    window.open(
+      `https://wa.me/${WHATSAPP_PHONE.replace('+', '')}?text=${encodeURIComponent(message)}`,
+      '_blank'
+    )
+
+    clearCart()
+    setWhatsappSubmitted(true)
     setProcessing(false)
   }
 
-  if (success) {
+  if (whatsappSubmitted) {
     return (
-      <DashLayout title="Order Confirmed">
-        <div className="success-page">
-          <div className="success-card">
-            <div className="success-icon">🎉</div>
-            <h2>Payment Successful!</h2>
-            <p>Your order has been placed and is being processed.</p>
-            <div className="order-info">
-              <div className="order-row"><span>Order Number</span><strong>{success.orderNumber}</strong></div>
-<div className="order-row"><span>Total Paid</span><strong>ZES {Number(success.totalPrice).toLocaleString()}</strong></div>
-              <div className="order-row"><span>Payment Method</span><strong style={{ textTransform: 'capitalize' }}>{success.paymentMethod}</strong></div>
-              <div className="order-row"><span>Status</span><span className="badge badge-available">✅ Paid</span></div>
+      <DashLayout title="WhatsApp Order">
+        <div className="whatsapp-sent-page">
+          <div className="whatsapp-sent-card">
+            <div className="whatsapp-sent-icon">
+              <FiSend />
             </div>
+            <h2>Order Sent to WhatsApp!</h2>
+            <p>We opened WhatsApp in a new tab. Please send the message to confirm your order.</p>
             <div className="success-actions">
-              <Link to="/shop" className="btn btn-primary btn-lg"><FiShoppingBag /> Continue Shopping</Link>
-              <Link to="/orders" className="btn btn-ghost">View Orders</Link>
+              <Link to="/shop" className="btn btn-primary btn-lg">
+                <FiShoppingBag /> Continue Shopping
+              </Link>
+              <Link to="/checkout" className="btn btn-ghost" onClick={() => setWhatsappSubmitted(false)}>
+                New Order
+              </Link>
             </div>
           </div>
         </div>
@@ -77,7 +86,6 @@ export default function Checkout() {
   return (
     <DashLayout title="Checkout">
       <div className="checkout-page">
-        {/* Cart */}
         <div className="checkout-left">
           <div className="card">
             <h3 className="section-h">🛒 Cart ({count} items)</h3>
@@ -85,27 +93,38 @@ export default function Checkout() {
               <div className="empty-state">
                 <div className="empty-icon">🛒</div>
                 <p>Your cart is empty.</p>
-                <Link to="/shop" className="btn btn-primary" style={{ marginTop: '1rem' }}>Browse Shop</Link>
+                <Link to="/shop" className="btn btn-primary" style={{ marginTop: '1rem' }}>
+                  Browse Shop
+                </Link>
               </div>
             ) : (
               <div className="cart-items">
-                {items.map(item => (
+                {items.map((item) => (
                   <div key={item._id} className="cart-item">
-                    <img src={item.images?.[0]?.url || 'https://via.placeholder.com/60'} alt={item.title} />
+                    <img
+                      src={item.images?.[0]?.url || 'https://via.placeholder.com/60'}
+                      alt={item.title}
+                    />
                     <div className="cart-item-info">
                       <p className="ci-title">{item.title}</p>
-<p className="ci-price">ZES {Number(item.price).toLocaleString()}</p>
+                      <p className="ci-price">ZES {Number(item.price).toLocaleString()}</p>
                     </div>
                     <div className="qty-ctrl">
-                      <button className="qty-btn" onClick={() => updateQty(item._id, item.qty - 1)}><FiMinus /></button>
+                      <button className="qty-btn" onClick={() => updateQty(item._id, item.qty - 1)}>
+                        <FiMinus />
+                      </button>
                       <span>{item.qty}</span>
-                      <button className="qty-btn" onClick={() => updateQty(item._id, item.qty + 1)}><FiPlus /></button>
+                      <button className="qty-btn" onClick={() => updateQty(item._id, item.qty + 1)}>
+                        <FiPlus />
+                      </button>
                     </div>
-<p className="ci-subtotal">ZES {(item.price * item.qty).toLocaleString()}</p>
-                    <button className="btn btn-danger btn-sm" onClick={() => removeItem(item._id)}><FiTrash2 /></button>
+                    <p className="ci-subtotal">ZES {(item.price * item.qty).toLocaleString()}</p>
+                    <button className="btn btn-danger btn-sm" onClick={() => removeItem(item._id)}>
+                      <FiTrash2 />
+                    </button>
                   </div>
                 ))}
-<div className="cart-total">
+                <div className="cart-total">
                   <span>Total</span>
                   <strong>ZES {total.toLocaleString()}</strong>
                 </div>
@@ -114,91 +133,56 @@ export default function Checkout() {
           </div>
         </div>
 
-        {/* Payment */}
         {items.length > 0 && (
           <div className="checkout-right">
             <div className="card">
-              <h3 className="section-h">💳 Payment Method</h3>
-              <div className="payment-methods">
-                {PAYMENT_METHODS.map(m => (
-                  <label key={m.id} className={`pm-option ${method === m.id ? 'selected' : ''}`}
-                    style={{ '--pm-color': m.color }}>
-                    <input type="radio" name="method" value={m.id} checked={method === m.id} onChange={() => setMethod(m.id)} hidden />
-                    <span className="pm-icon">{m.icon}</span>
-                    <span>{m.label}</span>
-                    {method === m.id && <FiCheckCircle className="pm-check" />}
-                  </label>
-                ))}
+              <h3 className="section-h">💬 Order via WhatsApp</h3>
+               <div className="pay-summary">
+                <div className="pay-row">
+                  <span>Subtotal</span>
+                  <span>ZES {total.toLocaleString()}</span>
+                </div>
+                <div className="pay-row">
+                  <span>Delivery</span>
+                  <span className="text-green">Free</span>
+                </div>
+                <div className="pay-row total">
+                  <span>Total</span>
+                  <strong>ZES {total.toLocaleString()}</strong>
+                </div>
               </div>
 
-              {/* Dynamic payment fields */}
-              <div className="pay-fields">
-                {method === 'visa' && (
-                  <>
-                    <div className="form-group">
-                      <label className="form-label">Cardholder Name</label>
-                      <input className="form-input" placeholder="John Doe" value={payFields.name}
-                        onChange={e => setPayFields({ ...payFields, name: e.target.value })} />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Card Number</label>
-                      <input className="form-input" placeholder="1234 5678 9012 3456" maxLength={19}
-                        value={payFields.cardNumber}
-                        onChange={e => setPayFields({ ...payFields, cardNumber: e.target.value.replace(/(\d{4})/g, '$1 ').trim() })} />
-                    </div>
-                    <div className="form-row-pay">
-                      <div className="form-group">
-                        <label className="form-label">Expiry</label>
-                        <input className="form-input" placeholder="MM/YY" maxLength={5}
-                          value={payFields.expiry} onChange={e => setPayFields({ ...payFields, expiry: e.target.value })} />
-                      </div>
-                      <div className="form-group">
-                        <label className="form-label">CVV</label>
-                        <input className="form-input" placeholder="123" maxLength={3}
-                          value={payFields.cvv} onChange={e => setPayFields({ ...payFields, cvv: e.target.value })} />
-                      </div>
-                    </div>
-                  </>
-                )}
-                {method === 'stripe' && (
-                  <>
-                    <div className="stripe-demo-note">⚡ Stripe Demo Mode — no real charge</div>
-                    <div className="form-group">
-                      <label className="form-label">Test Card Number</label>
-                      <input className="form-input" defaultValue="4242 4242 4242 4242" readOnly />
-                    </div>
-                    <div className="form-row-pay">
-                      <div className="form-group"><label className="form-label">Expiry</label><input className="form-input" placeholder="12/26" /></div>
-                      <div className="form-group"><label className="form-label">CVC</label><input className="form-input" placeholder="123" /></div>
-                    </div>
-                  </>
-                )}
-                {(method === 'orange' || method === 'momo') && (
+              {!user && (
+                <div className="guest-info-form">
+                  <h4>Your Contact Info</h4>
                   <div className="form-group">
-                    <label className="form-label">{method === 'orange' ? 'Orange' : 'MTN'} Phone Number</label>
-                    <input className="form-input" placeholder="+237 6XX XXX XXX"
-                      value={payFields.phone} onChange={e => setPayFields({ ...payFields, phone: e.target.value })} />
-                    <p className="field-hint">You will receive a payment prompt on this number.</p>
+                    <label><FiUser /> Name</label>
+                    <input
+                      type="text"
+                      className="form-input"
+                      placeholder="Your full name"
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                    />
                   </div>
-                )}
-              </div>
-
-              <div className="pay-summary">
-                <div className="pay-row"><span>Subtotal</span><span>ZES {total.toLocaleString()}</span></div>
-                <div className="pay-row"><span>Delivery</span><span className="text-green">Free</span></div>
-                <div className="pay-row total"><span>Total</span><strong>ZES {total.toLocaleString()}</strong></div>
-              </div>
+                  <div className="form-group">
+                    <label><FiPhone /> Phone</label>
+                    <input
+                      type="tel"
+                      className="form-input"
+                      placeholder="+254..."
+                      value={customerPhone}
+                      onChange={(e) => setCustomerPhone(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
 
               <button className="btn btn-primary btn-lg pay-btn" onClick={handlePay} disabled={processing}>
-                {processing ? (
-                  <><span className="spinner" /> Processing payment...</>
-                ) : method === 'whatsapp' ? (
-                  <>Order via WhatsApp →</>
-                ) : (
-                  <>Pay ZES {total.toLocaleString()} →</>
-                )}
+                {processing ? <><span className="spinner" /> Sending...</> : <>Order via WhatsApp →</>}
               </button>
-              <p className="pay-secure">🔒 Your payment is secured and encrypted</p>
+
+              <p className="pay-secure">Send the message on WhatsApp to confirm your order.</p>
             </div>
           </div>
         )}
@@ -206,3 +190,4 @@ export default function Checkout() {
     </DashLayout>
   )
 }
+
