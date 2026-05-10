@@ -9,9 +9,14 @@ const features = [
   { icon: '🚀', title: 'Fast Delivery', desc: 'Get your items delivered quickly across Cameroon.' },
 ]
 
-const categories = ['👗 Clothing', '🧸 Toys', '🍼 Feeding', '🛏️ Furniture', '🚗 Strollers', '💊 Health', '📚 Books', '👟 Shoes']
+
+
+
+
 
 export default function Landing() {
+
+
   return (
     <div className="landing">
       <Navbar />
@@ -60,14 +65,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Categories strip */}
-      <section className="categories-strip">
-        <div className="strip-inner">
-          {categories.map((c, i) => (
-            <Link key={i} to="/register" className="cat-chip">{c}</Link>
-          ))}
-        </div>
-      </section>
+
 
       {/* Features */}
       <section className="features-section">
