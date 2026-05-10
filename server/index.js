@@ -24,6 +24,14 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Debug CORS origin for login requests (remove after fix)
+app.use('/api/auth/login', (req, res, next) => {
+  if (req && req.headers) {
+    console.log('[CORS DEBUG] Origin:', req.headers.origin);
+  }
+  next();
+});
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
