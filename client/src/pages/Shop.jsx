@@ -91,13 +91,13 @@ export default function Shop() {
               </select>
             </div>
             <div className="filter-group">
-              <label>Min Price (XAF)</label>
+<label>Min Price (ZES)</label>
               <input type="number" className="form-input" value={filters.minPrice}
                 onChange={(e) => { setFilters({ ...filters, minPrice: e.target.value }); setPage(1) }}
                 placeholder="0" />
             </div>
             <div className="filter-group">
-              <label>Max Price (XAF)</label>
+<label>Max Price (ZES)</label>
               <input type="number" className="form-input" value={filters.maxPrice}
                 onChange={(e) => { setFilters({ ...filters, maxPrice: e.target.value }); setPage(1) }}
                 placeholder="No limit" />

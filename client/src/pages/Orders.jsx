@@ -30,7 +30,7 @@ export default function Orders() {
                   </div>
                   <div className="order-meta">
                     <span className="badge badge-available">✅ {order.status}</span>
-                    <span className="order-total">XAF {Number(order.totalPrice).toLocaleString()}</span>
+                    <span className="order-total">ZES {Number(order.totalPrice).toLocaleString()}</span>
                   </div>
                 </div>
                 <div className="order-items">
@@ -39,7 +39,7 @@ export default function Orders() {
                       {item.image && <img src={item.image} alt={item.title} />}
                       <span>{item.title}</span>
                       <span className="oi-qty">×{item.quantity}</span>
-                      <span className="oi-price">XAF {Number(item.price * item.quantity).toLocaleString()}</span>
+                      <span className="oi-price">ZES {Number(item.price * item.quantity).toLocaleString()}</span>
                     </div>
                   ))}
                 </div>

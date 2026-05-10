@@ -63,13 +63,13 @@ export default function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-            <Route path="/shop" element={<PrivateRoute><Shop /></PrivateRoute>} />
+            <Route path="/shop" element={<Shop />} />
             <Route path="/my-products" element={<PrivateRoute><MyProducts /></PrivateRoute>} />
             <Route path="/add-product" element={<PrivateRoute><AddProduct /></PrivateRoute>} />
             <Route path="/edit-product/:id" element={<PrivateRoute><EditProduct /></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
             <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
-            <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
+            <Route path="/checkout" element={<Checkout />} />
             <Route path="*" element={null} />
           </Routes>
         </BrowserRouter>

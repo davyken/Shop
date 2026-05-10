@@ -32,7 +32,7 @@ export default function Dashboard() {
   const stats = [
     { icon: <FiPackage />, label: 'My Listings', value: myProducts.length, color: 'pink', link: '/my-products' },
     { icon: <FiShoppingBag />, label: 'Cart Items', value: count, color: 'blue', link: '/checkout' },
-    { icon: <FiTrendingUp />, label: 'Cart Total', value: `XAF ${total.toLocaleString()}`, color: 'amber', link: '/checkout' },
+    { icon: <FiTrendingUp />, label: 'Cart Total', value: `ZES ${total.toLocaleString()}`, color: 'amber', link: '/checkout' },
     { icon: <FiPlusCircle />, label: 'Add Product', value: 'Sell Now', color: 'teal', link: '/add-product' },
   ]
 
@@ -77,7 +77,7 @@ export default function Dashboard() {
                     <img src={p.images?.[0]?.url || 'https://via.placeholder.com/50'} alt={p.title} />
                     <div>
                       <p className="mini-title">{p.title}</p>
-                      <p className="mini-price">XAF {Number(p.price).toLocaleString()}</p>
+                      <p className="mini-price">ZES {Number(p.price).toLocaleString()}</p>
                     </div>
                     <span className={`badge badge-${p.status}`}>{p.status}</span>
                   </div>
@@ -98,7 +98,7 @@ export default function Dashboard() {
                     <img src={p.images?.[0]?.url || 'https://via.placeholder.com/50'} alt={p.title} />
                     <div>
                       <p className="mini-title">{p.title}</p>
-                      <p className="mini-price">XAF {Number(p.price).toLocaleString()}</p>
+                      <p className="mini-price">ZES {Number(p.price).toLocaleString()}</p>
                     </div>
                     <span className={`badge badge-${p.status}`}>{p.status}</span>
                   </div>

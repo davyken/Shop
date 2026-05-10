@@ -13,8 +13,8 @@
   flex-direction: column;
   padding: 1.5rem 1rem;
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: 64px;
+  height: calc(100vh - 64px);
   overflow-y: auto;
 }
 

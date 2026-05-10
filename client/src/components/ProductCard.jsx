@@ -34,7 +34,7 @@ export default function ProductCard({ product, onDelete }) {
         <h3 className="product-title">{product.title}</h3>
         <p className="product-desc">{product.description?.slice(0, 70)}{product.description?.length > 70 ? '...' : ''}</p>
         <div className="product-footer">
-          <span className="product-price">XAF {Number(product.price).toLocaleString()}</span>
+ZES {Number(product.price).toLocaleString()}
           <div className="product-actions">
             {isOwner ? (
               <>
