@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 import './Checkout.css'
 
 const PAYMENT_METHODS = [
+  { id: 'whatsapp', label: 'Order via WhatsApp', icon: '💬', color: '#25D366' },
   { id: 'visa', label: 'Visa / Mastercard', icon: '💳', color: '#1a1f71' },
   { id: 'orange', label: 'Orange Money', icon: '🟠', color: '#FF6600' },
   { id: 'momo', label: 'MTN MoMo', icon: '📱', color: '#FFCC00' },
@@ -17,13 +18,22 @@ const PAYMENT_METHODS = [
 export default function Checkout() {
   const { items, updateQty, removeItem, clearCart, total, count } = useCart()
   const navigate = useNavigate()
-  const [method, setMethod] = useState('visa')
+  const [method, setMethod] = useState('whatsapp')
   const [processing, setProcessing] = useState(false)
   const [success, setSuccess] = useState(null)
   const [payFields, setPayFields] = useState({ cardNumber: '', expiry: '', cvv: '', name: '', phone: '' })
 
   const handlePay = async () => {
     if (items.length === 0) return toast.error('Cart is empty')
+
+    if (method === 'whatsapp') {
+      const phone = '+254728721142'
+      const itemText = items.map(i => `- ${i.title} (x${i.qty}) - ZES ${(i.price * i.qty).toLocaleString()}`).join('\n')
+      const message = `Hello, I want to order:\n${itemText}\n\n*Total: ZES ${total.toLocaleString()}*`
+      window.open(`https://wa.me/${phone.replace('+', '')}?text=${encodeURIComponent(message)}`, '_blank')
+      return
+    }
+
     setProcessing(true)
     await new Promise(r => setTimeout(r, 2200))
     try {
@@ -50,7 +60,7 @@ export default function Checkout() {
             <p>Your order has been placed and is being processed.</p>
             <div className="order-info">
               <div className="order-row"><span>Order Number</span><strong>{success.orderNumber}</strong></div>
-              <div className="order-row"><span>Total Paid</span><strong>XAF {Number(success.totalPrice).toLocaleString()}</strong></div>
+<div className="order-row"><span>Total Paid</span><strong>ZES {Number(success.totalPrice).toLocaleString()}</strong></div>
               <div className="order-row"><span>Payment Method</span><strong style={{ textTransform: 'capitalize' }}>{success.paymentMethod}</strong></div>
               <div className="order-row"><span>Status</span><span className="badge badge-available">✅ Paid</span></div>
             </div>
@@ -84,20 +94,20 @@ export default function Checkout() {
                     <img src={item.images?.[0]?.url || 'https://via.placeholder.com/60'} alt={item.title} />
                     <div className="cart-item-info">
                       <p className="ci-title">{item.title}</p>
-                      <p className="ci-price">XAF {Number(item.price).toLocaleString()}</p>
+<p className="ci-price">ZES {Number(item.price).toLocaleString()}</p>
                     </div>
                     <div className="qty-ctrl">
                       <button className="qty-btn" onClick={() => updateQty(item._id, item.qty - 1)}><FiMinus /></button>
                       <span>{item.qty}</span>
                       <button className="qty-btn" onClick={() => updateQty(item._id, item.qty + 1)}><FiPlus /></button>
                     </div>
-                    <p className="ci-subtotal">XAF {(item.price * item.qty).toLocaleString()}</p>
+<p className="ci-subtotal">ZES {(item.price * item.qty).toLocaleString()}</p>
                     <button className="btn btn-danger btn-sm" onClick={() => removeItem(item._id)}><FiTrash2 /></button>
                   </div>
                 ))}
-                <div className="cart-total">
+<div className="cart-total">
                   <span>Total</span>
-                  <strong>XAF {total.toLocaleString()}</strong>
+                  <strong>ZES {total.toLocaleString()}</strong>
                 </div>
               </div>
             )}
@@ -174,16 +184,18 @@ export default function Checkout() {
               </div>
 
               <div className="pay-summary">
-                <div className="pay-row"><span>Subtotal</span><span>XAF {total.toLocaleString()}</span></div>
+                <div className="pay-row"><span>Subtotal</span><span>ZES {total.toLocaleString()}</span></div>
                 <div className="pay-row"><span>Delivery</span><span className="text-green">Free</span></div>
-                <div className="pay-row total"><span>Total</span><strong>XAF {total.toLocaleString()}</strong></div>
+                <div className="pay-row total"><span>Total</span><strong>ZES {total.toLocaleString()}</strong></div>
               </div>
 
               <button className="btn btn-primary btn-lg pay-btn" onClick={handlePay} disabled={processing}>
                 {processing ? (
                   <><span className="spinner" /> Processing payment...</>
+                ) : method === 'whatsapp' ? (
+                  <>Order via WhatsApp →</>
                 ) : (
-                  <>Pay XAF {total.toLocaleString()} →</>
+                  <>Pay ZES {total.toLocaleString()} →</>
                 )}
               </button>
               <p className="pay-secure">🔒 Your payment is secured and encrypted</p>

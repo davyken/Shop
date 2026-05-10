@@ -29,8 +29,10 @@ export default function Navbar() {
         <div className={`navbar-links ${menuOpen ? 'open' : ''}`}>
           {!user ? (
             <>
+              <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+              <Link to="/shop" onClick={() => setMenuOpen(false)}>Shop</Link>
+              <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
               <Link to="/register" onClick={() => setMenuOpen(false)} className="btn btn-primary btn-sm">Register</Link>
-
             </>
           ) : (
             <>
@@ -38,6 +40,8 @@ export default function Navbar() {
               <Link to="/shop" onClick={() => setMenuOpen(false)}>Shop</Link>
               <Link to="/my-products" onClick={() => setMenuOpen(false)}>My Products</Link>
               <Link to="/add-product" onClick={() => setMenuOpen(false)}>Sell</Link>
+              <Link to="/orders" onClick={() => setMenuOpen(false)}>Orders</Link>
+              <Link to="/profile" onClick={() => setMenuOpen(false)}>Profile</Link>
             </>
           )}
         </div>

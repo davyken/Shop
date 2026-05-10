@@ -131,7 +131,7 @@ export default function ProductForm({ product, isEdit }) {
               </div>
               <div className="form-row-2">
                 <div className="form-group">
-                  <label className="form-label">Price (XAF) *</label>
+                  <label className="form-label">Price (ZES) *</label>
                   <input name="price" type="number" min="0" className="form-input" value={form.price} onChange={handle} placeholder="e.g. 5000" required />
                 </div>
                 <div className="form-group">

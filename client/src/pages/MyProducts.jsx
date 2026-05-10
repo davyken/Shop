@@ -67,7 +67,7 @@ export default function MyProducts() {
                   <span>{p.title}</span>
                 </div>
                 <span className="table-cat">{p.category?.name || '-'}</span>
-                <span className="table-price">XAF {Number(p.price).toLocaleString()}</span>
+                <span className="table-price">ZES {Number(p.price).toLocaleString()}</span>
                 <span><span className={`badge badge-${p.status}`}>{STATUS_LABEL[p.status]}{p.status === 'in_stock' ? ` (${p.stockCount})` : ''}</span></span>
                 <div className="table-actions">
                   <Link to={`/edit-product/${p._id}`} className="btn btn-ghost btn-sm"><FiEdit2 /></Link>
