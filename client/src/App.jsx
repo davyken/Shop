@@ -19,6 +19,11 @@ import EditProduct from './pages/EditProduct'
 import Profile from './pages/Profile'
 import Orders from './pages/Orders'
 import Checkout from './pages/Checkout'
+import ProductDetails from './pages/ProductDetails'
+import About from './pages/About'
+import Contact from './pages/Contact'
+import Categories from './pages/Categories'
+import CategoryProducts from './pages/CategoryProducts'
 import Navbar from './components/Navbar'
 
 function PrivateRoute({ children }) {
@@ -56,22 +61,27 @@ export default function App() {
             }}
           />
           <Navbar />
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-            <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password/:token" element={<ResetPassword />} />
-            <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/my-products" element={<PrivateRoute><MyProducts /></PrivateRoute>} />
-            <Route path="/add-product" element={<PrivateRoute><AddProduct /></PrivateRoute>} />
-            <Route path="/edit-product/:id" element={<PrivateRoute><EditProduct /></PrivateRoute>} />
-            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-            <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="*" element={null} />
-          </Routes>
+           <Routes>
+             <Route path="/" element={<Landing />} />
+             <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+             <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+             <Route path="/forgot-password" element={<ForgotPassword />} />
+             <Route path="/reset-password/:token" element={<ResetPassword />} />
+             <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+             <Route path="/shop" element={<Shop />} />
+             <Route path="/categories" element={<Categories />} />
+             <Route path="/category/:id" element={<CategoryProducts />} />
+             <Route path="/product/:id" element={<ProductDetails />} />
+             <Route path="/about" element={<About />} />
+             <Route path="/contact" element={<Contact />} />
+             <Route path="/my-products" element={<PrivateRoute><MyProducts /></PrivateRoute>} />
+             <Route path="/add-product" element={<PrivateRoute><AddProduct /></PrivateRoute>} />
+             <Route path="/edit-product/:id" element={<PrivateRoute><EditProduct /></PrivateRoute>} />
+             <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+             <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
+             <Route path="/checkout" element={<Checkout />} />
+             <Route path="*" element={null} />
+           </Routes>
         </BrowserRouter>
       </CartProvider>
     </AuthProvider>

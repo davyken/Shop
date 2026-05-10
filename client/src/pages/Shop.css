@@ -16,6 +16,13 @@
   outline: none; transition: var(--transition);
 }
 .search-input:focus { border-color: var(--pink); box-shadow: 0 0 0 3px var(--pink-light); }
+.sort-wrap {
+  position: relative;
+  min-width: 150px;
+}
+.sort-wrap .form-select {
+  padding-right: 30px; /* Space for sort icon */
+}
 .filter-toggle { position: relative; }
 .filter-toggle.active { background: var(--pink-light); color: var(--pink-dark); border-color: var(--pink); }
 .filter-dot {

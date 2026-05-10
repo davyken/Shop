@@ -139,7 +139,7 @@ export default function Landing() {
               {carouselProducts.map((product) => (
                 <div className="carousel-slide" key={product._id}>
                   <div className="carousel-card">
-                    <img src={product.images?.[0]?.url || 'https://via.placeholder.com/400x300'} alt={product.title} className="carousel-img" />
+                    <img src={product.images?.[0]?.url || 'https://picsum.photos/seed/land1/400/300'} alt={product.title} className="carousel-img" />
                     <div className="carousel-info">
                       <p className="carousel-category">{product.category?.name || 'Baby Product'}</p>
                       <h3 className="carousel-title">{product.title}</h3>

@@ -74,7 +74,7 @@ export default function Dashboard() {
               <div className="mini-product-list">
                 {myProducts.slice(0,4).map(p => (
                   <div key={p._id} className="mini-product">
-                    <img src={p.images?.[0]?.url || 'https://via.placeholder.com/50'} alt={p.title} />
+                    <img src={p.images?.[0]?.url || 'https://picsum.photos/seed/dashboard1/50/50'} alt={p.title} />
                     <div>
                       <p className="mini-title">{p.title}</p>
                       <p className="mini-price">ZES {Number(p.price).toLocaleString()}</p>
@@ -95,7 +95,7 @@ export default function Dashboard() {
               <div className="mini-product-list">
                 {recentProducts.map(p => (
                   <div key={p._id} className="mini-product">
-                    <img src={p.images?.[0]?.url || 'https://via.placeholder.com/50'} alt={p.title} />
+                    <img src={p.images?.[0]?.url || 'https://picsum.photos/seed/dashboard1/50/50'} alt={p.title} />
                     <div>
                       <p className="mini-title">{p.title}</p>
                       <p className="mini-price">ZES {Number(p.price).toLocaleString()}</p>
